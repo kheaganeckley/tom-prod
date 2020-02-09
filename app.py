@@ -59,7 +59,7 @@ style_input = dict(
 )
 
 
-global tom = tompson_sampler()
+tom = tompson_sampler()
 
 
 #### dash componets serving as react componet wrapper 
