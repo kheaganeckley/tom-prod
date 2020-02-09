@@ -1,4 +1,3 @@
-import plotly.express as pxt
 import scipy.stats as stat
 from tom.slot import slot
 
