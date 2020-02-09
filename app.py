@@ -11,10 +11,14 @@ import dash_html_components as html
 from dash.dependencies import Input, Output, State
 from tom.thompson_smapling import tompson_sampler
 from colorScheme import color
-from setup import app
+import dash
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 
-
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+app.config.suppress_callback_exceptions = True
 
 
 
