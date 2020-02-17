@@ -6,30 +6,16 @@ Created on Tue Jan 14 20:18:47 2020
 @author: kheagan
 """
 
-
-
-
-
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 from colorScheme import color
-import dash
+from app import app
 import json
 from dash.exceptions import PreventUpdate
-import Tom.Tom as to 
-import Tom.Bernolli as ber
+import TomV2.Tom as to 
+import TomV2.Bernolli as ber
 from stlye import style_button, style_graph_grid, style_line , style_layout, style_input
-
-
-
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
-
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-server = app.server
-#app.config.suppress_callback_exceptions = True
-
 
 
 def plot_row():
@@ -212,23 +198,6 @@ def slect_slot_display(cs, current_slot):
             raise PreventUpdate
 
         return  current_slot or 'slot1'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
