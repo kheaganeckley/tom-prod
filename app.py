@@ -11,7 +11,9 @@ import dash_html_components as html
 from dash.dependencies import Input, Output, State
 from tom.thompson_smapling import tompson_sampler
 from colorScheme import color
+import sqlalchemy  
 import dash
+
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
