@@ -13,6 +13,6 @@ homeLayout = dict(
 
 
 layout = html.Div([
-    html.H1('Welcome to kheagans dash'),
-    html.H3('An easy way to do stats. Not tested.')
+    html.H1('Welcome to our dash!'),
+    html.H3('This is an easy way to do stats')
 ], style= homeLayout)

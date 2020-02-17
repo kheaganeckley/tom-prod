@@ -35,7 +35,7 @@ def plot_row():
 
 def heading():
     return html.Div([
-        html.H1('Thompson sampling to solve multi bandit promblem'),
+        html.H1('Solving multi bandit promblem'),
         #html.H1(id='test'),
         html.Hr(style= style_line)
     ])

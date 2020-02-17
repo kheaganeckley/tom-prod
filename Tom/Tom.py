@@ -16,13 +16,13 @@ def select_slot(slots, sample):
                            )
 
      for slot in slots.values():
-            sample_from_beta = sample(slot)
-            print('sample {} from {}'.format(sample_from_beta, slot['name']))
+            sampling = sample(slot)
+            print('sample {} from {}'.format(sampling, slot['name']))
                
 
-            if  sample_from_beta >  temp_current_sample['current_sample']:
+            if  sampling >  temp_current_sample['current_sample']:
                 temp_current_sample = slot
-                temp_current_sample['current_sample'] = sample_from_beta
+                temp_current_sample['current_sample'] = sampling
 
      print('max sample is {} from {}'.format( temp_current_sample['current_sample'] ,temp_current_sample['name'] ))
      return temp_current_sample['name']

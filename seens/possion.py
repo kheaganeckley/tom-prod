@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jan 14 20:18:47 2020
+
+@author: kheagan
+"""
+
+
+
 
 
 import dash_core_components as dcc
@@ -8,45 +18,16 @@ import dash
 import json
 from dash.exceptions import PreventUpdate
 import Tom.Tom as to 
-import Tom.Bernolli as ber
+import Tom.Possion as per
 from stlye import style_button, style_graph_grid, style_line , style_layout, style_input
-
-
-
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
-
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-server = app.server
-#app.config.suppress_callback_exceptions = True
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+from setup import app
 
 
 def plot_row():
     return html.Div([
-        dcc.Graph('slot1'),
-        dcc.Graph('slot2'),
-        dcc.Graph('slot3'),
+        dcc.Graph('slot1_possion'),
+        dcc.Graph('slot2_possion'),
+        dcc.Graph('slot3_possion'),
     ],
      style = style_graph_grid)
 
@@ -54,7 +35,7 @@ def plot_row():
 
 def heading():
     return html.Div([
-        html.H1('Thompson sampling to solve multi bandit promblem'),
+        html.H1('Solving multi bandit promblem'),
         #html.H1(id='test'),
         html.Hr(style= style_line)
     ])
@@ -64,27 +45,22 @@ def heading():
 def input():
     return  html.Div([
        html.H3('Slect a slot by sampling one num from each posterior'),
-       html.Button('Select slot', id = 'Button_to_select_slot', style= style_button),
+       html.Button('Select slot', id = 'Button_to_select_slot_possion', style= style_button),
        html.Br(),
        html.Br(),
-       html.H3(id = 'selected_slot'),
-       dcc.RadioItems(
-        id='was_success',
-        options=[
-            dict( label = 'doubled your money',
-                  value = 'True'),
-            dict( label = 'lost your moeny',
-                  value = 'False'),
-        ],
-        value= 'True'
+       html.H3(id = 'selected_slot_possion'),
+       dcc.Input(
+        id= 'input_possion',
+        placeholder='How many occrances happend',
+        type='text'
         ),
-        html.Button('SUBMIT', id='Button', style= style_button),
+       html.Button('SUBMIT', id='Button_possion', style= style_button),
     ],
     style=style_input)
 
-app.layout = html.Div([
-   dcc.Store(id='slots'),
-   dcc.Store(id='current_slot'),
+layout = html.Div([
+   dcc.Store(id='slots_possion'),
+   dcc.Store(id='current_slot_possion'),
    heading(),
    input(),
    plot_row()
@@ -98,19 +74,19 @@ style= style_layout)
 
 inititate_slots = dict(
                 slot1 = dict(
-                    a = 1,
+                    a = 5,
                     b = 1,
                     current_sample = 0,
                     name = 'slot1'
                 ),
                 slot2 = dict(
-                    a = 1,
+                    a = 5,
                     b = 1,
                     current_sample = 0,
                     name = 'slot2'
                 ),
                 slot3 = dict(
-                    a = 1,
+                    a = 5,
                     b = 1,
                     current_sample = 0,
                     name = 'slot3'
@@ -126,10 +102,10 @@ inititate_slots = dict(
 ##                      
 ######################################################
 @app.callback(
-              Output('current_slot', 'data'),
-              [Input('Button_to_select_slot', 'n_clicks')],
-              [State('current_slot', 'data'),
-               State('slots', 'data')]
+              Output('current_slot_possion', 'data'),
+              [Input('Button_to_select_slot_possion', 'n_clicks')],
+              [State('current_slot_possion', 'data'),
+               State('slots_possion', 'data')]
              )
 def slect_slot(n_clicks, current_slot, slots):
     if n_clicks is None:
@@ -142,7 +118,7 @@ def slect_slot(n_clicks, current_slot, slots):
     slots = slots or inititate_slots
 
     #update current slot 
-    current_slot  = to.select_slot( slots , ber.sample)
+    current_slot  = to.select_slot( slots , per.sample)
     return current_slot 
 
 
@@ -153,14 +129,14 @@ def slect_slot(n_clicks, current_slot, slots):
 ##                       update graphs
 ######################################################
 @app.callback(
-               Output('slots', 'data'),
-               [Input('Button', 'n_clicks'),],
-               [State('was_success', 'value'),
-                State('current_slot', 'data'),
-                State('slots', 'data')
+               Output('slots_possion', 'data'),
+               [Input('Button_possion', 'n_clicks'),],
+               [State('input_possion', 'value'),
+                State('current_slot_possion', 'data'),
+                State('slots_possion', 'data'),
                ]
              )
-def pull_lever(n_clicks, was_success, current_slot, slots): # add store 
+def pull_lever(n_clicks, value, current_slot, slots): # add store 
         if n_clicks is None:
                 raise PreventUpdate
 
@@ -169,8 +145,8 @@ def pull_lever(n_clicks, was_success, current_slot, slots): # add store
     
         #print(slots[currentslot])
        
-
-        a,b = ber.update( was_success, slots[current_slot] )
+        
+        a,b = per.update( int(value), slots[current_slot] )
         
         slots[current_slot]['a'] = a
         slots[current_slot]['b'] = b
@@ -189,11 +165,11 @@ def pull_lever(n_clicks, was_success, current_slot, slots): # add store
 ##                    plots
 ##                      
 ######################################################
-@app.callback(  [Output('slot1', 'figure'), 
-                 Output('slot2', 'figure'),
-                 Output('slot3', 'figure')],
-                [Input('slots', 'modified_timestamp')],
-                [State('slots', 'data')])
+@app.callback(  [Output('slot1_possion', 'figure'), 
+                 Output('slot2_possion', 'figure'),
+                 Output('slot3_possion', 'figure')],
+                [Input('slots_possion', 'modified_timestamp')],
+                [State('slots_possion', 'data')])
 def draw_plots(sl,  slots):
         if sl is None:
             raise PreventUpdate
@@ -203,7 +179,7 @@ def draw_plots(sl,  slots):
         plots = []
 
         for slot in slots.values():
-            plots.append(ber.draw(slot))
+            plots.append(per.draw(slot))
 
         return  plots[0], plots[1], plots[2]
 
@@ -214,9 +190,9 @@ def draw_plots(sl,  slots):
 ##                    current slot out
 ##                      
 ######################################################
-@app.callback(  Output( 'selected_slot', 'children'),
-                [Input('current_slot', 'modified_timestamp')],
-                [State('current_slot', 'data')])
+@app.callback(  Output( 'selected_slot_possion', 'children'),
+                [Input('current_slot_possion', 'modified_timestamp')],
+                [State('current_slot_possion', 'data')])
 def slect_slot_display(cs, current_slot):
         if cs is None:
             raise PreventUpdate

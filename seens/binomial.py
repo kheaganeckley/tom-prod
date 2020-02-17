@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jan 14 20:18:47 2020
+
+@author: kheagan
+"""
+
+
+
 
 
 import dash_core_components as dcc
@@ -10,16 +20,7 @@ from dash.exceptions import PreventUpdate
 import Tom.Tom as to 
 import Tom.Bernolli as ber
 from stlye import style_button, style_graph_grid, style_line , style_layout, style_input
-
-
-
-
-
-
-
-
-
-
+from setup import app
 
 
 def plot_row():
@@ -202,10 +203,6 @@ def slect_slot_display(cs, current_slot):
             raise PreventUpdate
 
         return  current_slot or 'slot1'
-
-
-
-
 
 
 
