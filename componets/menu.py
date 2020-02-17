@@ -49,7 +49,7 @@ LinkStyle = dict(
 def menu(MenuArray):
    return html.Div([
      html.Div(
-       dcc.Link(id = 'titletag', children = 'Thompsons dash', href='/', style=TitleText),
+       dcc.Link(id = 'titletag', children = "Thompson's dash", href='/', style=TitleText),
        style=MenuBox
      ),
      html.Div(

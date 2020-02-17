@@ -12,6 +12,7 @@ style_graph_grid = dict(
 )
 
 
+
 style_line = dict(
     borderColor = color['trim']
 )
@@ -22,13 +23,21 @@ style_layout = dict(
     display = 'flex',
     flexDirection = 'column',
     alignItems = 'center',
-    justifyContent = 'center'
+    justifyContent = 'center', 
+    marginTop = '20px'
 )
 
 style_button = dict(
     borderColor = color['trim'],
     color = color['trim']
 )
+
+style_input_text = dict(
+    borderColor = color['trim'],
+    color = color['trim'],
+    marginBottom = '7px'
+)
+
 
 style_input = dict(
     display = 'flex',

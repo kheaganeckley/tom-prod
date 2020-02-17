@@ -19,7 +19,7 @@ import json
 from dash.exceptions import PreventUpdate
 import Tom.Tom as to 
 import Tom.Possion as per
-from stlye import style_button, style_graph_grid, style_line , style_layout, style_input
+from stlye import style_button, style_graph_grid, style_line , style_layout, style_input, style_input_text
 from setup import app
 
 
@@ -35,7 +35,7 @@ def plot_row():
 
 def heading():
     return html.Div([
-        html.H1('Solving multi bandit promblem'),
+        html.H1('Occurrences in an set interval data'),
         #html.H1(id='test'),
         html.Hr(style= style_line)
     ])
@@ -44,15 +44,16 @@ def heading():
 
 def input():
     return  html.Div([
-       html.H3('Slect a slot by sampling one num from each posterior'),
+       html.H3('Select a slot by sampling one number from each posterior'),
        html.Button('Select slot', id = 'Button_to_select_slot_possion', style= style_button),
-       html.Br(),
-       html.Br(),
        html.H3(id = 'selected_slot_possion'),
+       html.Br(),
+       html.H4('Then comment on...'),
        dcc.Input(
         id= 'input_possion',
         placeholder='How many occrances happend',
-        type='text'
+        type='text',
+        style= style_input_text
         ),
        html.Button('SUBMIT', id='Button_possion', style= style_button),
     ],

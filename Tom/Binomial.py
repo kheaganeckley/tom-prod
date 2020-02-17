@@ -1,16 +1,15 @@
 import plotly.graph_objects as go
 import scipy.stats as stat
 import numpy as np
-import pandas as pd
 from colorScheme import color
 
 
-def update(x, n, previous_a, previous_b):
+def update(x, n, slot):
     """
     docstring: todo
     """
-    a = previous_a + x
-    b = previous_b + n -x
+    a = slot['a'] + x
+    b = slot['b'] + n -x
     return a,b
 
 

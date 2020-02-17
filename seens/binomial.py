@@ -18,16 +18,16 @@ import dash
 import json
 from dash.exceptions import PreventUpdate
 import Tom.Tom as to 
-import Tom.Bernolli as ber
-from stlye import style_button, style_graph_grid, style_line , style_layout, style_input
+import Tom.Binomial as bin
+from stlye import style_button, style_graph_grid, style_line , style_layout, style_input, style_input_text
 from setup import app
 
 
 def plot_row():
     return html.Div([
-        dcc.Graph('slot1'),
-        dcc.Graph('slot2'),
-        dcc.Graph('slot3'),
+        dcc.Graph('slot1_bin'),
+        dcc.Graph('slot2_bin'),
+        dcc.Graph('slot3_bin'),
     ],
      style = style_graph_grid)
 
@@ -35,7 +35,7 @@ def plot_row():
 
 def heading():
     return html.Div([
-        html.H1('Thompson sampling to solve multi bandit promblem'),
+        html.H1('Proportional data'),
         #html.H1(id='test'),
         html.Hr(style= style_line)
     ])
@@ -44,28 +44,30 @@ def heading():
 
 def input():
     return  html.Div([
-       html.H3('Slect a slot by sampling one num from each posterior'),
-       html.Button('Select slot', id = 'Button_to_select_slot', style= style_button),
+       html.H3('Select a slot by sampling one number from each posterior'),
+       html.Button('Select slot', id = 'Button_to_select_slot_bin', style= style_button),
+       html.H3(id = 'selected_slot_bin'),
        html.Br(),
-       html.Br(),
-       html.H3(id = 'selected_slot'),
-       dcc.RadioItems(
-        id='was_success',
-        options=[
-            dict( label = 'doubled your money',
-                  value = 'True'),
-            dict( label = 'lost your moeny',
-                  value = 'False'),
-        ],
-        value= 'True'
+       html.H4('Then comment on...'),
+       dcc.Input(
+        id= 'input_bin_success',
+        placeholder='How many success',
+        type='text',
+        style= style_input_text
         ),
-        html.Button('SUBMIT', id='Button', style= style_button),
+          dcc.Input(
+        id= 'input_bin_trials',
+        placeholder='How many trials',
+        type='text',
+        style= style_input_text
+        ),
+       html.Button('SUBMIT', id='Button_bin', style= style_button),
     ],
     style=style_input)
 
 layout = html.Div([
-   dcc.Store(id='slots'),
-   dcc.Store(id='current_slot'),
+   dcc.Store(id='slots_bin'),
+   dcc.Store(id='current_slot_bin'),
    heading(),
    input(),
    plot_row()
@@ -107,10 +109,10 @@ inititate_slots = dict(
 ##                      
 ######################################################
 @app.callback(
-              Output('current_slot', 'data'),
-              [Input('Button_to_select_slot', 'n_clicks')],
-              [State('current_slot', 'data'),
-               State('slots', 'data')]
+              Output('current_slot_bin', 'data'),
+              [Input('Button_to_select_slot_bin', 'n_clicks')],
+              [State('current_slot_bin', 'data'),
+               State('slots_bin', 'data')]
              )
 def slect_slot(n_clicks, current_slot, slots):
     if n_clicks is None:
@@ -123,7 +125,7 @@ def slect_slot(n_clicks, current_slot, slots):
     slots = slots or inititate_slots
 
     #update current slot 
-    current_slot  = to.select_slot( slots , ber.sample)
+    current_slot  = to.select_slot( slots , bin.sample)
     return current_slot 
 
 
@@ -134,14 +136,15 @@ def slect_slot(n_clicks, current_slot, slots):
 ##                       update graphs
 ######################################################
 @app.callback(
-               Output('slots', 'data'),
-               [Input('Button', 'n_clicks'),],
-               [State('was_success', 'value'),
-                State('current_slot', 'data'),
-                State('slots', 'data')
+               Output('slots_bin', 'data'),
+               [Input('Button_bin', 'n_clicks'),],
+               [State('input_bin_success', 'value'),
+                State('input_bin_trials', 'value'),
+                State('current_slot_bin', 'data'),
+                State('slots_bin', 'data'),
                ]
              )
-def pull_lever(n_clicks, was_success, current_slot, slots): # add store 
+def pull_lever(n_clicks, success, trials, current_slot, slots): # add store 
         if n_clicks is None:
                 raise PreventUpdate
 
@@ -150,8 +153,8 @@ def pull_lever(n_clicks, was_success, current_slot, slots): # add store
     
         #print(slots[currentslot])
        
-
-        a,b = ber.update( was_success, slots[current_slot] )
+        
+        a,b = bin.update( int(success), int(trials), slots[current_slot] )
         
         slots[current_slot]['a'] = a
         slots[current_slot]['b'] = b
@@ -170,11 +173,11 @@ def pull_lever(n_clicks, was_success, current_slot, slots): # add store
 ##                    plots
 ##                      
 ######################################################
-@app.callback(  [Output('slot1', 'figure'), 
-                 Output('slot2', 'figure'),
-                 Output('slot3', 'figure')],
-                [Input('slots', 'modified_timestamp')],
-                [State('slots', 'data')])
+@app.callback(  [Output('slot1_bin', 'figure'), 
+                 Output('slot2_bin', 'figure'),
+                 Output('slot3_bin', 'figure')],
+                [Input('slots_bin', 'modified_timestamp')],
+                [State('slots_bin', 'data')])
 def draw_plots(sl,  slots):
         if sl is None:
             raise PreventUpdate
@@ -184,7 +187,7 @@ def draw_plots(sl,  slots):
         plots = []
 
         for slot in slots.values():
-            plots.append(ber.draw(slot))
+            plots.append(bin.draw(slot))
 
         return  plots[0], plots[1], plots[2]
 
@@ -195,14 +198,18 @@ def draw_plots(sl,  slots):
 ##                    current slot out
 ##                      
 ######################################################
-@app.callback(  Output( 'selected_slot', 'children'),
-                [Input('current_slot', 'modified_timestamp')],
-                [State('current_slot', 'data')])
+@app.callback(  Output( 'selected_slot_bin', 'children'),
+                [Input('current_slot_bin', 'modified_timestamp')],
+                [State('current_slot_bin', 'data')])
 def slect_slot_display(cs, current_slot):
         if cs is None:
             raise PreventUpdate
 
         return  current_slot or 'slot1'
+
+
+
+
 
 
 

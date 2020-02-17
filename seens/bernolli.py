@@ -35,7 +35,7 @@ def plot_row():
 
 def heading():
     return html.Div([
-        html.H1('Solving multi bandit promblem'),
+        html.H1('Yes/no data'),
         #html.H1(id='test'),
         html.Hr(style= style_line)
     ])
@@ -44,11 +44,11 @@ def heading():
 
 def input():
     return  html.Div([
-       html.H3('Slect a slot by sampling one num from each posterior'),
-       html.Button('Select slot', id = 'Button_to_select_slot', style= style_button),
-       html.Br(),
-       html.Br(),
+       html.H3('Select a slot by sampling one number from each posterior'),
+       html.Button('Select slot', id = 'Button_to_select_slot', style= style_button),    
        html.H3(id = 'selected_slot'),
+       html.Br(),
+       html.H4('Then comment on...'),
        dcc.RadioItems(
         id='was_success',
         options=[

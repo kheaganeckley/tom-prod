@@ -16,7 +16,7 @@ from dash.dependencies import Input, Output, State
 import dash
 import json
 from dash.exceptions import PreventUpdate
-from seens import home, bernolli, possion
+from seens import home, bernolli, possion, binomial
 from componets import menu
 from setup import app
 
@@ -37,6 +37,10 @@ MenuArray = [
        dict(
         name = 'Possion',
         link = '/seens/possion'
+    ),
+        dict(
+        name = 'Binomial',
+        link = '/seens/binomial'
     ),
 ]
 
@@ -60,6 +64,8 @@ def display_page(pathname):
     elif pathname == '/seens/possion':
         return possion.layout
 
+    elif pathname == '/seens/binomial':
+        return binomial.layout
     else:
         return '404'
 
