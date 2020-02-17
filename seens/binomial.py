@@ -1,21 +1,25 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jan 14 20:18:47 2020
 
-@author: kheagan
-"""
 
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 from colorScheme import color
-from app import app
+import dash
 import json
 from dash.exceptions import PreventUpdate
-import TomV2.Tom as to 
-import TomV2.Bernolli as ber
+import Tom.Tom as to 
+import Tom.Bernolli as ber
 from stlye import style_button, style_graph_grid, style_line , style_layout, style_input
+
+
+
+
+
+
+
+
+
+
 
 
 def plot_row():
@@ -58,7 +62,7 @@ def input():
     ],
     style=style_input)
 
-app.layout = html.Div([
+layout = html.Div([
    dcc.Store(id='slots'),
    dcc.Store(id='current_slot'),
    heading(),
@@ -203,5 +207,6 @@ def slect_slot_display(cs, current_slot):
 
 
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
+
+
+
