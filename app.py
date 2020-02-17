@@ -7,6 +7,9 @@ Created on Tue Jan 14 20:18:47 2020
 """
 
 
+
+
+
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
@@ -15,8 +18,8 @@ import dash
 from app import app
 import json
 from dash.exceptions import PreventUpdate
-import TomV2.Tom as to 
-import TomV2.Bernolli as ber
+import Tom.Tom as to 
+import Tom.Bernolli as ber
 from stlye import style_button, style_graph_grid, style_line , style_layout, style_input
 
 

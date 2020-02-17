@@ -1,3 +1,8 @@
+"""
+just some random methods
+
+"""
+
 def select_slot(slots, sample):    
      """
      docstring: you need to specify slots and the sampling method beta, ext
