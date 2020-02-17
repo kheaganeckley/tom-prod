@@ -1,7 +1,6 @@
 import plotly.graph_objects as go
 import scipy.stats as stat
 import numpy as np
-import pandas as pd
 from colorScheme import color
 
 ###dfd
