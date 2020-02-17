@@ -20,7 +20,7 @@ from dash.exceptions import PreventUpdate
 import Tom.Tom as to 
 import Tom.Bernolli as ber
 from stlye import style_button, style_graph_grid, style_line , style_layout, style_input
-
+from setup import app
 
 
 def plot_row():

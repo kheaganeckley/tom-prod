@@ -1,6 +1,6 @@
 
 color = dict(
     trim = '#007049',
-    background = 'black',
-    text = 'white'
+    background = 'white',
+    text = 'black'
 )

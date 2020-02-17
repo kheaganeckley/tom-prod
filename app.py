@@ -18,12 +18,13 @@ import json
 from dash.exceptions import PreventUpdate
 from seens import home, bernolli
 from componets import menu
+from setup import app
+
+#external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+#app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 #app.config.suppress_callback_exceptions = True
 
@@ -54,7 +55,6 @@ def display_page(pathname):
 
     else:
         return '404'
-
 
 
 
