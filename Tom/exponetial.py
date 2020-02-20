@@ -2,6 +2,7 @@ import plotly.graph_objects as go
 import scipy.stats as stat
 import numpy as np
 from colorScheme import color
+from plotly.subplots import make_subplots
 
 
 
@@ -34,7 +35,7 @@ def sample(slot):
 
 
 def draw(slot):
-    x = np.linspace(0,  10, 100)
+    x = np.linspace(0,  10, 1000)
     
     a = slot['a']
     b = slot['b']
@@ -42,22 +43,36 @@ def draw(slot):
     shape = a
 
     y = stat.gamma.pdf(x,  a= shape, scale =scale)
-  
-    MLE = round(np.mean(1/np.random.choice(x,10000,True, y/sum(y))))
+    predict_sample =  1/(np.random.choice(x,10000,True, y/sum(y))+0.01)
 
-    title = 'Expected waiting time is {} from {}'.format(MLE, slot['name'])
+
+
+    Mean_prediction = round(np.mean(predict_sample))
+    
+    title = 'The expected waiting time is {} in {}'.format( Mean_prediction ,slot['name'])
         
+    fig =make_subplots( rows=2, cols=1)
+
     trace = go.Scatter( x=x, y=y, marker= dict(
                 color = color['trim']
     ))
-    layout = go.Layout(xaxis= dict(title = 'The rate'),
-                           yaxis= dict(title = 'density'),
-                           title= title, 
+
+    trace2 = go.Histogram( x= predict_sample,
+    marker=dict(
+        color = color['secound']
+    )
+    )
+
+    fig.add_trace(trace, row=1, col=1)
+    fig.add_trace(trace2, row=2, col=1)
+
+    fig.update_xaxes(title_text="The rate", row=1, col=1)
+    fig.update_xaxes(title_text="The waiting time for event", row=2, col=1)
+
+    fig.update_layout( title= title, 
                            template='plotly_dark',
                            width= 400,
-    
-                       )
-    data = [trace]
+                           showlegend = False
+                           )
 
-    fig =  go.Figure(data, layout)
     return fig

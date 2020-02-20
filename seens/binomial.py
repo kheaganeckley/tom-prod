@@ -66,6 +66,7 @@ def input():
     style=style_input)
 
 layout = html.Div([
+   dcc.Store(id='n'),
    dcc.Store(id='slots_bin'),
    dcc.Store(id='current_slot_bin'),
    heading(),
@@ -77,7 +78,7 @@ style= style_layout)
 
 
 
-
+initialise_n = 0
 
 inititate_slots = dict(
                 slot1 = dict(
@@ -136,7 +137,9 @@ def slect_slot(n_clicks, current_slot, slots):
 ##                       update graphs
 ######################################################
 @app.callback(
-               Output('slots_bin', 'data'),
+               [Output('slots_bin', 'data'),
+                Output('n', 'data')
+               ],
                [Input('Button_bin', 'n_clicks'),],
                [State('input_bin_success', 'value'),
                 State('input_bin_trials', 'value'),
@@ -150,7 +153,7 @@ def pull_lever(n_clicks, success, trials, current_slot, slots): # add store
 
         current_slot = current_slot or 'slot1'
         slots = slots or inititate_slots  
-    
+        n = initialise_n or int(trials)
         #print(slots[currentslot])
        
         
@@ -159,8 +162,7 @@ def pull_lever(n_clicks, success, trials, current_slot, slots): # add store
         slots[current_slot]['a'] = a
         slots[current_slot]['b'] = b
 
-        return slots
-    
+        return slots, n    
 
 
 
@@ -177,17 +179,20 @@ def pull_lever(n_clicks, success, trials, current_slot, slots): # add store
                  Output('slot2_bin', 'figure'),
                  Output('slot3_bin', 'figure')],
                 [Input('slots_bin', 'modified_timestamp')],
-                [State('slots_bin', 'data')])
-def draw_plots(sl,  slots):
+                [State('slots_bin', 'data'),
+                 State('n', 'data')
+                ])
+def draw_plots(sl,  slots, n):
         if sl is None:
             raise PreventUpdate
 
         slots = slots or inititate_slots
+        n = initialise_n or n
 
         plots = []
 
         for slot in slots.values():
-            plots.append(bin.draw(slot))
+            plots.append(bin.draw(slot, n))
 
         return  plots[0], plots[1], plots[2]
 

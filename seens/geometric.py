@@ -35,7 +35,7 @@ def plot_row():
 
 def heading():
     return html.Div([
-        html.H1('Occurrences in an set interval data'),
+        html.H1('Failures untill the first success'),
         #html.H1(id='test'),
         html.Hr(style= style_line)
     ])
@@ -45,13 +45,13 @@ def heading():
 def input():
     return  html.Div([
        html.H3('Select a slot by sampling one number from each posterior'),
-       html.Button('Select slot', id = 'Button_to_select_slot_possion', style= style_button),
+       html.Button('Select slot', id = 'Button_to_select_slot_geo', style= style_button),
        html.H3(id = 'selected_slot_geo'),
        html.Br(),
        html.H4('Then comment on...'),
        dcc.Input(
         id= 'input_geo',
-        placeholder='How many occrances happend',
+        placeholder='Failures untill first success',
         type='text',
         style= style_input_text
         ),
@@ -75,19 +75,19 @@ style= style_layout)
 
 inititate_slots = dict(
                 slot1 = dict(
-                    a = 5,
+                    a = 1,
                     b = 1,
                     current_sample = 0,
                     name = 'slot1'
                 ),
                 slot2 = dict(
-                    a = 5,
+                    a = 1,
                     b = 1,
                     current_sample = 0,
                     name = 'slot2'
                 ),
                 slot3 = dict(
-                    a = 5,
+                    a = 1,
                     b = 1,
                     current_sample = 0,
                     name = 'slot3'
@@ -119,7 +119,9 @@ def slect_slot(n_clicks, current_slot, slots):
     slots = slots or inititate_slots
 
     #update current slot 
-    current_slot  = to.select_slot( slots , per.sample)
+    current_slot  = to.select_slot( slots , geo.sample)
+    print(current_slot)
+    print('hello')
     return current_slot 
 
 

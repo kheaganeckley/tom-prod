@@ -2,6 +2,8 @@ import plotly.graph_objects as go
 import scipy.stats as stat
 import numpy as np
 from colorScheme import color
+from plotly.subplots import make_subplots
+
 
 ###dfd
 def update(was_success, slot):
@@ -36,19 +38,35 @@ def sample(slot):
 def draw(slot):
     x = np.linspace(0,  1, 100)
     y = stat.beta.pdf(x,  slot['a'],  slot['b'])
-    title = 'prob of favourable outcome in {}'.format(slot['name'])
+    
+
+    predict_sample = np.random.choice(x,10000,True, y/sum(y))
+
+    title = '{} mean predict sample {}'.format(slot['name'], round(np.mean(predict_sample),1))
         
+   
+   
+    fig =make_subplots( rows=2, cols=1)
+
     trace = go.Scatter( x=x, y=y, marker= dict(
                 color = color['trim']
     ))
-    layout = go.Layout(xaxis= dict(title = 'reward'),
-                           yaxis= dict(title = 'density'),
-                           title= title, 
+
+    trace2 = go.Histogram( x= predict_sample,
+    marker=dict(
+        color = color['secound']
+    )
+    )
+
+    fig.add_trace(trace, row=1, col=1)
+    fig.add_trace(trace2, row=2, col=1)
+
+    fig.update_xaxes(title_text="The probablity of success", row=1, col=1)
+    fig.update_xaxes(title_text="Expected outcome", row=2, col=1)
+
+    fig.update_layout( title= title, 
                            template='plotly_dark',
                            width= 400,
-    
-                       )
-    data = [trace]
-
-    fig =  go.Figure(data, layout)
+                           showlegend = False
+                           )
     return fig
