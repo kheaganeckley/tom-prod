@@ -11,7 +11,7 @@ def select_slot(slots, sample):
      temp_current_sample = dict(
                               a = 0,
                               b = 0,
-                              current_sample = 0,
+                              current_sample = -10000000,
                               name = 'dummy'
                            )
 
