@@ -35,7 +35,7 @@ def sample(slot):
 
 
 def draw(slot):
-    x = np.linspace(0,  10, 1000)
+    x = np.linspace(0.1,  10, 1000)
     
     a = slot['a']
     b = slot['b']
@@ -43,9 +43,9 @@ def draw(slot):
     shape = a
 
     y = stat.gamma.pdf(x,  a= shape, scale =scale)
-    predict_sample =  1/(np.random.choice(x,10000,True, y/sum(y))+0.01)
-
-
+    print(np.random.choice(x,10000,True, y/sum(y)))
+    print(np.min(np.random.choice(x,10000,True, y/sum(y))))
+    predict_sample =  1/(np.random.choice(x,10000,True, y/sum(y)))
 
     Mean_prediction = round(np.mean(predict_sample))
     

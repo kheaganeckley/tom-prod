@@ -30,7 +30,7 @@ def sample(slot):
 
 
 def draw(slot):
-    x = np.linspace(0,  10, 100)
+    x = np.linspace(0.1,  10, 100)
     
     a = slot['a']
     b = slot['b']
