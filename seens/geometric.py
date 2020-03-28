@@ -126,6 +126,8 @@ def slect_slot(n_clicks, current_slot, slots):
 
 
 
+
+
 #######################################################
 ##                 choose if you won or lost 
 ##                     update prior beliefs
